@@ -1,7 +1,7 @@
 {
   "name": "@istarry/dsh-client-ui-settings-prompt-enhance",
   "description": "Prompt-enhance settings page: the enable switch, the generation parameters, and the editable prompt templates",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "publishConfig": {
     "access": "public"
   },

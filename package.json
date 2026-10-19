@@ -1,7 +1,7 @@
 {
   "name": "@istarry/dsh-prompt-enhance",
   "description": "Prompt enhancement for the composer: a star button left of the send action rewrites the draft with the session's model, with editable template files beside the bundle",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "icon": "./icon.svg",
   "type": "module",
   "main": "lib/index.js",
@@ -32,9 +32,9 @@
     }
   },
   "dependencies": {
-    "@istarry/dsh-client-ui-prompt-enhance": "^0.1.0",
-    "@istarry/dsh-client-ui-settings-prompt-enhance": "^0.1.0",
-    "@istarry/dsh-prompt-enhance-core": "^0.1.0"
+    "@istarry/dsh-client-ui-prompt-enhance": "^0.1.1",
+    "@istarry/dsh-client-ui-settings-prompt-enhance": "^0.1.1",
+    "@istarry/dsh-prompt-enhance-core": "^0.1.1"
   },
   "publishConfig": {
     "access": "public"

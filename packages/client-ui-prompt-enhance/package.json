@@ -1,7 +1,7 @@
 {
   "name": "@istarry/dsh-client-ui-prompt-enhance",
   "description": "Composer enhance button: a one-shot prompt rewrite beside the submit action, with restore-original and cancellation",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "publishConfig": {
     "access": "public"
   },

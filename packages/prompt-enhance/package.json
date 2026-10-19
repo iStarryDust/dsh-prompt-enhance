@@ -1,7 +1,7 @@
 {
   "name": "@istarry/dsh-prompt-enhance-core",
   "description": "One-shot prompt enhancement for the composer: a single-turn rewrite over the session's model with editable template files",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "publishConfig": {
     "access": "public"
   },
@@ -46,8 +46,8 @@
   "license": "MIT",
   "dependencies": {
     "zod": "^4.4.3",
-    "@deepseek-ai/dsh-llm": "^0.1.7-rc.2 || ^0.2.0-rc.2 || ^0.2.1-rc.2",
-    "@deepseek-ai/dsh-typert-protocol": "^0.1.7-rc.2 || ^0.2.0-rc.2 || ^0.2.1-rc.2",
+    "@deepseek-ai/dsh-llm": "0.2.0-rc.2",
+    "@deepseek-ai/dsh-typert-protocol": "0.2.0-rc.2",
     "@deepseek-ai/schemastery": "^3.18.1"
   },
   "devDependencies": {
