@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "title": "Prompt Enhancement",
+    "description": "A star button left of the composer's send action: one click rewrites the draft into a clearer prompt with the session's model (no session history, attachments untouched), click again to restore the original; templates are seeded into the harness home (prompt-enhance\\prompts) on first use and apply on change"
+  }
+}
