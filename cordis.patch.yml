@@ -1,0 +1,13 @@
+# The prompt-enhance bundle: three rows. The host package owns the
+# `promptEnhance` Remote namespace (one-shot prompt rewrite over the session
+# model plus the template file verbs); the composer button renders the
+# enhance/restore control left of the send action; the settings client
+# package renders the 增强提示词 settings page (switch, parameters, and the
+# editable templates).
+- insert:
+    - id: prompt-enhance
+      name: '@istarry/dsh-prompt-enhance-core'
+    - id: ui-prompt-enhance
+      name: '@istarry/dsh-client-ui-prompt-enhance'
+    - id: ui-settings-prompt-enhance
+      name: '@istarry/dsh-client-ui-settings-prompt-enhance'

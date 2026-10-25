@@ -1,0 +1,49 @@
+{
+  "name": "@istarry/dsh-prompt-enhance",
+  "description": "Prompt enhancement for the composer: a star button left of the send action rewrites the draft with the session's model, with editable template files beside the bundle",
+  "version": "0.1.3",
+  "icon": "./icon.svg",
+  "type": "module",
+  "main": "lib/index.js",
+  "types": "lib/types/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./lib/types/index.d.ts",
+      "default": "./lib/index.js"
+    },
+    "./package.json": "./package.json",
+    "./cordis.patch.yml": "./cordis.patch.yml",
+    "./locale/*.json": "./locale/*.json"
+  },
+  "files": [
+    "icon.svg",
+    "locale/*.json",
+    "lib/index.js",
+    "cordis.patch.yml",
+    "lib/types/**/*.d.ts",
+    "prompts/*.md",
+    "LICENSE",
+    "README*.md"
+  ],
+  "license": "MIT",
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    }
+  },
+  "dependencies": {
+    "@istarry/dsh-client-ui-prompt-enhance": "^0.1.2",
+    "@istarry/dsh-client-ui-settings-prompt-enhance": "^0.1.2",
+    "@istarry/dsh-prompt-enhance-core": "^0.1.2"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/iStarryDust/dsh-prompt-enhance.git"
+  },
+  "engines": {
+    "dsh": ">=0.2.1-rc.2"
+  }
+}
