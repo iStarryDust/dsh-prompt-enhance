@@ -1,0 +1,255 @@
+/* Visual language shared with the official settings sections
+   (ui-agent-preset AgentPresetSection): the 720px column, the 18px title, the
+   tertiary intro, uppercase group heads, and the settings-card tokens. */
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-width: 720px;
+  color: var(--dsw-alias-label-primary);
+}
+
+.title {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.intro {
+  margin: 0;
+  font-size: 13px;
+  color: var(--dsw-alias-label-tertiary);
+}
+
+.group {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.group + .group {
+  margin-top: 8px;
+}
+
+.groupHead {
+  margin: 0;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--dsw-alias-label-tertiary);
+}
+
+.rows {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.rowCard {
+  border: 0.5px solid var(--dsw-alias-settings-card-stroke);
+  border-radius: var(--dsw-radius-xl);
+  background: var(--dsw-alias-settings-card-fill);
+  transition: background .16s;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 14px 16px;
+}
+
+.rowCard:hover {
+  background: var(--dsw-alias-interactive-bg-hover);
+}
+
+.rowText {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+
+.rowTitle {
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.rowDesc {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--dsw-alias-label-secondary);
+}
+
+.error {
+  margin: 0;
+  font-size: 12px;
+  color: var(--dsw-alias-state-error-primary);
+}
+
+/* One labelled field per card row: the label column keeps titles aligned
+   while the control takes the remaining width. */
+.fields {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  border: 0.5px solid var(--dsw-alias-settings-card-stroke);
+  border-radius: var(--dsw-radius-xl);
+  background: var(--dsw-alias-settings-card-fill);
+  padding: 14px 16px;
+}
+
+.field {
+  display: flex;
+  align-items: flex-start;
+  gap: 24px;
+}
+
+.fieldText {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  flex: none;
+  width: 200px;
+}
+
+.control {
+  flex: 1;
+  min-width: 0;
+  box-sizing: border-box;
+  height: 30px;
+  padding: 0 10px;
+  border: 0.5px solid var(--dsw-alias-border-l4);
+  border-radius: var(--dsw-radius-lg);
+  background: var(--dsw-alias-bg-layer-2);
+  color: var(--dsw-alias-label-primary);
+  font-size: 13px;
+}
+
+.control:focus-visible {
+  outline: var(--dsw-focus-ring-width) solid var(--dsw-focus-ring-color, var(--dsw-alias-state-business-primary));
+  outline-offset: -1px;
+}
+
+.control:disabled {
+  opacity: 0.5;
+}
+
+/* Native select styled like the text control, with an explicit dark/light
+   color scheme so the option list never renders white-on-white. */
+.select {
+  box-sizing: border-box;
+  border: 0.5px solid var(--dsw-alias-border-l4);
+  border-radius: var(--dsw-radius-lg);
+  color-scheme: light dark;
+  background-color: var(--dsw-alias-bg-layer-2);
+  min-width: 0;
+  max-width: 360px;
+  height: 30px;
+  color: var(--dsw-alias-label-primary);
+  white-space: nowrap;
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12' fill='none'%3E%3Cpath d='M3 4.5L6 7.5L9 4.5' stroke='%2381858C' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-position: right 8px center;
+  background-repeat: no-repeat;
+  background-size: 12px 12px;
+  outline: none;
+  flex: 1;
+  padding: 0 28px 0 10px;
+  font-size: 13px;
+  line-height: 20px;
+}
+
+.select option {
+  background-color: var(--dsw-alias-bg-layer-1, #1c1c1e);
+  color: var(--dsw-alias-label-primary);
+}
+
+.select option:checked,
+.select option:hover {
+  background-color: var(--dsw-alias-interactive-bg-hover-solid, #303034);
+}
+
+.select:hover:not(:disabled) {
+  background-color: var(--dsw-alias-interactive-bg-hover);
+}
+
+.select:focus-visible {
+  outline: var(--dsw-focus-ring-width) solid var(--dsw-focus-ring-color, var(--dsw-alias-state-business-primary));
+  outline-offset: -1px;
+}
+
+.select:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.editorFooter {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.status {
+  font-size: 12px;
+  color: var(--dsw-alias-label-tertiary);
+}
+
+/* Template editors ride the composition viewer's chrome: bordered layer-2
+   pads with the mono face. */
+.editor {
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 150px;
+  resize: vertical;
+  margin: 0;
+  padding: 12px;
+  border: 0.5px solid var(--dsw-alias-border-l4);
+  border-radius: var(--dsw-radius-lg);
+  background: var(--dsw-alias-bg-layer-2);
+  color: var(--dsw-alias-label-primary);
+  font-family: var(--dsw-font-mono, ui-monospace, SFMono-Regular, Menlo, monospace);
+  font-size: 12.5px;
+  line-height: 1.6;
+  white-space: pre;
+  tab-size: 2;
+  --dsh-scrollbar-thumb: var(--dsw-alias-scrollbar-bg-l2);
+  --dsh-scrollbar-thumb-hover: var(--dsw-alias-scrollbar-hover-l2);
+}
+
+.editor:focus-visible {
+  outline: var(--dsw-focus-ring-width) solid var(--dsw-focus-ring-color, var(--dsw-alias-state-business-primary));
+  outline-offset: -1px;
+}
+
+.templateHead {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.templateTitle {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.badge {
+  font-size: 11px;
+  color: var(--dsw-alias-label-tertiary);
+}
+
+.path {
+  margin: 4px 0 0;
+  font-size: 11.5px;
+  font-family: var(--dsw-font-mono, ui-monospace, SFMono-Regular, Menlo, monospace);
+  color: var(--dsw-alias-label-tertiary);
+  word-break: break-all;
+}
+

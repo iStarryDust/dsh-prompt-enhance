@@ -1,0 +1,46 @@
+/* Visual language of the composer tool row: a 28px ghost icon button that
+   sits between the model selector and the submit action, reading as the same
+   family as the official controls (the attach circle and the send button). */
+
+.button {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 28px;
+  height: 28px;
+  border: none;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--dsw-alias-label-secondary);
+  cursor: pointer;
+}
+
+.button:hover:not(:disabled) {
+  background: var(--dsw-alias-interactive-bg-hover);
+  color: var(--dsw-alias-label-primary);
+}
+
+.button:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+/* While the rewrite runs the star pulses; the click cancels. */
+.busy {
+  color: var(--dsw-alias-state-business-primary);
+}
+
+.busy svg {
+  animation: enhance-pulse 1.1s ease-in-out infinite;
+}
+
+@keyframes enhance-pulse {
+  50% {
+    opacity: 0.3;
+  }
+}
+
+/* A finished rewrite offers the restore gesture in the business tint. */
+.restore {
+  color: var(--dsw-alias-state-business-primary);
+}
