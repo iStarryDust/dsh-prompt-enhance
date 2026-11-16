@@ -3881,11 +3881,19 @@ Set the \`cycles\` parameter to \`"ref"\` to resolve cyclical schemas with defs.
 			const [busy, setBusy] = (0, react.useState)(false);
 			const [error, setError] = (0, react.useState)(null);
 			const backupRef = (0, react.useRef)(null);
+			const enhancedRef = (0, react.useRef)(null);
 			const abortRef = (0, react.useRef)(null);
 			const draft = input.draft;
 			const empty = draft.trim() === "";
 			const hasReferences = input.occurrences.length > 0;
-			const restorable = backupRef.current !== null;
+			const restorable = backupRef.current !== null && draft === enhancedRef.current;
+			(0, react.useEffect)(() => {
+				if (backupRef.current !== null && draft !== enhancedRef.current) {
+					backupRef.current = null;
+					enhancedRef.current = null;
+					setError(null);
+				}
+			}, [draft]);
 			const tooltip = busy ? t("button.cancel") : restorable ? t("button.restore") : error ?? (hasReferences ? t("error.references") : t("button.enhance"));
 			const inert = !busy && !restorable && (empty || hasReferences);
 			const onClick = () => {
@@ -3896,6 +3904,7 @@ Set the \`cycles\` parameter to \`"ref"\` to resolve cyclical schemas with defs.
 				if (restorable) {
 					const backup = backupRef.current;
 					backupRef.current = null;
+					enhancedRef.current = null;
 					setError(null);
 					if (backup !== null) inputActions.setDraft(backup);
 					return;
@@ -3910,6 +3919,7 @@ Set the \`cycles\` parameter to \`"ref"\` to resolve cyclical schemas with defs.
 				enhance(captured).then((enhanced) => {
 					if (controller.signal.aborted) return;
 					backupRef.current = captured;
+					enhancedRef.current = enhanced;
 					inputActions.setDraft(enhanced);
 					notify("info", t("notice.done"));
 				}).catch((reason) => {
