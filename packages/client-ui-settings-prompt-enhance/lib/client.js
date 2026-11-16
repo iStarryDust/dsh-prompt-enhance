@@ -58,10 +58,12 @@ window.__ModuleLoader__.load({
 		* @param props - settings actions, snapshot hook, and localized copy.
 		* @returns the section page.
 		*/
-		function EnhanceSection({ useEnhanceSection, toggleEnabled, setParam, saveParams, loadModels, setTemplate, saveTemplates, restoreTemplates, loadTemplates, t }) {
+		function EnhanceSection({ useEnhanceSection, toggleEnabled, toggleShowNotices, setParam, saveParams, loadModels, setTemplate, saveTemplates, restoreTemplates, loadTemplates, t }) {
 			const state = useEnhanceSection((value) => value);
 			const [switchBusy, setSwitchBusy] = (0, react.useState)(false);
 			const [switchFailed, setSwitchFailed] = (0, react.useState)(false);
+			const [noticeBusy, setNoticeBusy] = (0, react.useState)(false);
+			const [noticeFailed, setNoticeFailed] = (0, react.useState)(false);
 			const [paramsBusy, setParamsBusy] = (0, react.useState)(false);
 			const [templatesBusy, setTemplatesBusy] = (0, react.useState)(false);
 			(0, react.useEffect)(() => {
@@ -96,7 +98,7 @@ window.__ModuleLoader__.load({
 							children: t("switchesGroup")
 						}), /* @__PURE__ */ (0, react_jsx_runtime.jsx)("ul", {
 							className: EnhanceSection_module_css_default.rows,
-							children: /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("li", {
+							children: [/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("li", {
 								className: EnhanceSection_module_css_default.rowCard,
 								children: [/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", {
 									className: EnhanceSection_module_css_default.rowText,
@@ -129,8 +131,41 @@ window.__ModuleLoader__.load({
 										});
 									}
 								})]
+							}), /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("li", {
+								className: EnhanceSection_module_css_default.rowCard,
+								children: [/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", {
+									className: EnhanceSection_module_css_default.rowText,
+									children: [
+										/* @__PURE__ */ (0, react_jsx_runtime.jsx)("span", {
+											className: EnhanceSection_module_css_default.rowTitle,
+											children: t("showNotices.title")
+										}),
+										/* @__PURE__ */ (0, react_jsx_runtime.jsx)("span", {
+											className: EnhanceSection_module_css_default.rowDesc,
+											children: t("showNotices.description")
+										}),
+										noticeFailed && /* @__PURE__ */ (0, react_jsx_runtime.jsx)("span", {
+											className: EnhanceSection_module_css_default.error,
+											role: "alert",
+											children: t("writeFailed")
+										})
+									]
+								}), /* @__PURE__ */ (0, react_jsx_runtime.jsx)(_deepseek_ai_dsh_client_ui_primitives.Switch, {
+									checked: state.params.showNotices,
+									disabled: disabled || noticeBusy,
+									label: t("showNotices.title"),
+									onChange: (next) => {
+										setNoticeFailed(false);
+										setNoticeBusy(true);
+										toggleShowNotices(next).catch(() => {
+											setNoticeFailed(true);
+										}).finally(() => {
+											setNoticeBusy(false);
+										});
+									}
+								})]
 							})
-						})]
+						]})]
 					}),
 					/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("section", {
 						className: EnhanceSection_module_css_default.group,
@@ -382,6 +417,7 @@ window.__ModuleLoader__.load({
 			const source = typeof section === "object" && section !== null && !Array.isArray(section) ? section : {};
 			return {
 				enabled: source.enabled !== false,
+				showNotices: source.showNotices !== false,
 				overrideModel: typeof source.overrideModel === "string" ? source.overrideModel : "",
 				temperature: typeof source.temperature === "number" && Number.isFinite(source.temperature) ? source.temperature : .7,
 				maxTokens: typeof source.maxTokens === "number" && Number.isFinite(source.maxTokens) ? source.maxTokens : 2048
@@ -468,6 +504,10 @@ window.__ModuleLoader__.load({
 			/** Toggle the enable switch through the shared configuration form. */
 			async toggleEnabled(next) {
 				await this.form.set("enabled", next);
+			}
+			/** Toggle the hint-notice switch through the shared configuration form. */
+			async toggleShowNotices(next) {
+				await this.form.set("showNotices", next);
 			}
 			/** Update one parameter draft field (client-side until saved). */
 			setParam(field, value) {
@@ -659,6 +699,8 @@ window.__ModuleLoader__.load({
 			"writeFailed": "写入失败，请重试。",
 			"switchesGroup": "开关",
 			"enabled.title": "显示增强按钮",
+			"showNotices.title": "显示增强提示",
+			"showNotices.description": "增强时在输入框上方显示提示条（如“提示词已增强…”）；关闭后静默执行，错误提示仍会显示。",
 			"enabled.description": "在输入框发送按钮左侧显示星形增强按钮。",
 			"paramsGroup": "生成参数",
 			"overrideModel.title": "覆盖模型",
@@ -695,6 +737,8 @@ window.__ModuleLoader__.load({
 			"writeFailed": "The write failed; try again.",
 			"switchesGroup": "Switches",
 			"enabled.title": "Show the enhance button",
+			"showNotices.title": "Show enhancement notices",
+			"showNotices.description": "Show the hint bar above the composer while enhancing (e.g. “Prompt enhanced…”). Turn off to run silently; error notices still appear.",
 			"enabled.description": "Show the star enhance button left of the composer send action.",
 			"paramsGroup": "Generation parameters",
 			"overrideModel.title": "Model override",
@@ -789,6 +833,7 @@ window.__ModuleLoader__.load({
 				inject: () => ({
 					hooks: { enhanceSection: controller.store },
 					toggleEnabled: (next) => controller.toggleEnabled(next),
+					toggleShowNotices: (next) => controller.toggleShowNotices(next),
 					setParam: (field, value) => {
 						controller.setParam(field, value);
 					},

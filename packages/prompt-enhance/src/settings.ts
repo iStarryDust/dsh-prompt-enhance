@@ -14,6 +14,12 @@ export interface PromptEnhanceConfig {
   /** Whether the composer's enhance button is offered at all (client-side switch). */
   enabled: Volatile<boolean>
   /**
+   * Whether the composer surfaces enhancement hint notices above the input
+   * (the "enhancing…/enhanced…/cancelled" info bars). Error notices stay on
+   * regardless so failures are never silent.
+   */
+  showNotices: Volatile<boolean>
+  /**
    * Model override spelled `provider/model`; empty follows the session's
    * current selection.
    */
@@ -29,6 +35,7 @@ export interface PromptEnhanceConfig {
 /** schemastery schema for the plugin configuration (volatile fields only). */
 export const Config = z.object({
   enabled: z.boolean().default(true).volatile(),
+  showNotices: z.boolean().default(true).volatile(),
   overrideModel: z.string().default('').volatile(),
   temperature: z.number().min(0).max(2).default(0.7).volatile(),
   maxTokens: z.number().step(1).min(64).max(65536).default(2048).volatile(),

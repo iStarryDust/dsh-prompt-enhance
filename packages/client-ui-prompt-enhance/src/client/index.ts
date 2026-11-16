@@ -71,7 +71,7 @@ export function apply(ctx: ClientContext): void {
   // The host plugin's volatile `enabled` switch through the shared
   // configuration form; an unmounted or disabled host hides the button.
   const form = ctx.configForms.get(HOST_ENTRY)
-  const store = createSnapshotStore<EnhanceConfigState>({ available: false, remoteReady: false, mountError: null })
+  const store = createSnapshotStore<EnhanceConfigState>({ available: false, remoteReady: false, mountError: null, showNotices: true })
 
   // Mount the generated Remote contribution: `ctx.get('remote.promptEnhance')`
   // resolves once this settles. The outcome is surfaced in the button state:
@@ -85,10 +85,11 @@ export function apply(ctx: ClientContext): void {
 
   const derive = (): void => {
     const snapshot = form.getSnapshot()
-    const value = snapshot.value as { enabled?: boolean } | undefined
+    const value = snapshot.value as { enabled?: boolean; showNotices?: boolean } | undefined
     store.set({
       ...store.getSnapshot(),
       available: snapshot.status === 'ready' && value?.enabled !== false && store.getSnapshot().mountError === null,
+      showNotices: value?.showNotices !== false,
     })
   }
   const unsubscribe = form.subscribe(derive)
