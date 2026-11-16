@@ -40,6 +40,11 @@ export interface EnhanceInjected {
   enhance: (text: string) => Promise<string>
   /** Surface a composer-routed notice (errors, cancellation). */
   notify: (level: 'info' | 'error', text: string) => void
+  /**
+   * Clear the current composer notice bar (info bars only). Used when the user
+   * turns hint notices off so an already-shown bar does not linger.
+   */
+  clearNotice: () => void
 }
 
 /** Props assembled by the slot renderer. */
@@ -82,7 +87,7 @@ function RestoreIcon() {
  * @returns the button, or nothing while unavailable.
  */
 export function EnhanceButton({
-  useInput, useEnhanceConfig, inputActions, enhance, notify, t,
+  useInput, useEnhanceConfig, inputActions, enhance, notify, clearNotice, t,
 }: EnhanceButtonProps) {
   const input = useInput(value => value)
   const config = useEnhanceConfig(value => value)
@@ -123,6 +128,16 @@ export function EnhanceButton({
   const notifyInfo = (text: string): void => {
     if (config.showNotices) notify('info', text)
   }
+
+  // Turning hint notices off must also retract a bar that is already on screen:
+  // the host keeps the last notice until it is replaced, so without this an
+  // enabled-then-disabled flow would leave the old bar stuck above the input.
+  // Track the previous value so we only clear on a true→false transition.
+  const showNoticesRef = useRef(config.showNotices)
+  useEffect(() => {
+    if (showNoticesRef.current && !config.showNotices) clearNotice()
+    showNoticesRef.current = config.showNotices
+  }, [config.showNotices, clearNotice])
 
   const onClick = () => {
     if (busy) {

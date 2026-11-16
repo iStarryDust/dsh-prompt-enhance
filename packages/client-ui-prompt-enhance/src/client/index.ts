@@ -148,6 +148,19 @@ export function apply(ctx: ClientContext): void {
           if (scope !== undefined) conversation.input.for(scope).notify(level, text)
         } catch { /* the tooltip still carries the message */ }
       },
+      clearNotice: () => {
+        try {
+          const scope = sessions.scope(sessionId)
+          if (scope === undefined) return
+          // The published `notices` store is read-only on the SessionInput face,
+          // but the concrete shell exposes it; setting null is the host's own
+          // "after clear" sentinel, so the info bar unmounts.
+          const facade = conversation.input.for(scope) as unknown as {
+            notices?: { set?: (value: null) => void }
+          }
+          facade.notices?.set?.(null)
+        } catch { /* best-effort; a lingering bar is not worth throwing over */ }
+      },
     }),
   }, EnhanceButton))
 }

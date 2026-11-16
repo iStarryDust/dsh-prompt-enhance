@@ -3875,7 +3875,7 @@ Set the \`cycles\` parameter to \`"ref"\` to resolve cyclical schemas with defs.
 		* @param props - input state, actions, controller, and localized copy.
 		* @returns the button, or nothing while unavailable.
 		*/
-		function EnhanceButton({ useInput, useEnhanceConfig, inputActions, enhance, notify, t }) {
+		function EnhanceButton({ useInput, useEnhanceConfig, inputActions, enhance, notify, clearNotice, t }) {
 			const input = useInput((value) => value);
 			const config = useEnhanceConfig((value) => value);
 			const [busy, setBusy] = (0, react.useState)(false);
@@ -3886,6 +3886,11 @@ Set the \`cycles\` parameter to \`"ref"\` to resolve cyclical schemas with defs.
 			const notifyInfo = (text) => {
 				if (config.showNotices) notify("info", text);
 			};
+			const showNoticesRef = (0, react.useRef)(config.showNotices);
+			(0, react.useEffect)(() => {
+				if (showNoticesRef.current && !config.showNotices) clearNotice();
+				showNoticesRef.current = config.showNotices;
+			}, [config.showNotices, clearNotice]);
 			const draft = input.draft;
 			const empty = draft.trim() === "";
 			const hasReferences = input.occurrences.length > 0;
@@ -4084,6 +4089,14 @@ Set the \`cycles\` parameter to \`"ref"\` to resolve cyclical schemas with defs.
 						try {
 							const scope = sessions.scope(sessionId);
 							if (scope !== void 0) conversation.input.for(scope).notify(level, text);
+						} catch {}
+					},
+					clearNotice: () => {
+						try {
+							const scope = sessions.scope(sessionId);
+							if (scope === void 0) return;
+							const facade = conversation.input.for(scope);
+							facade.notices?.set?.(null);
 						} catch {}
 					}
 				})
