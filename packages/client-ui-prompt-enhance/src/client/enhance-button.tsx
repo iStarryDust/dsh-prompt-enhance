@@ -20,6 +20,8 @@ export interface EnhanceConfigState {
   remoteReady: boolean
   /** The Remote mount failure, when the contribution could not mount. */
   mountError: string | null
+  /** Whether enhancement hint notices are surfaced above the composer. */
+  showNotices: boolean
 }
 
 /** Injected face of the `conversation.input.right` entry. */
@@ -116,6 +118,12 @@ export function EnhanceButton({
       : error ?? (hasReferences ? t('error.references') : t('button.enhance'))
   const inert = !busy && !restorable && (empty || hasReferences)
 
+  // Hint notices are user-toggleable from settings; error notices bypass this
+  // guard so a failure is never silenced.
+  const notifyInfo = (text: string): void => {
+    if (config.showNotices) notify('info', text)
+  }
+
   const onClick = () => {
     if (busy) {
       abortRef.current?.abort()
@@ -135,18 +143,18 @@ export function EnhanceButton({
     abortRef.current = controller
     setBusy(true)
     setError(null)
-    notify('info', t('notice.enhancing'))
+    notifyInfo(t('notice.enhancing'))
     enhance(captured)
       .then((enhanced) => {
         if (controller.signal.aborted) return
         backupRef.current = captured
         enhancedRef.current = enhanced
         inputActions.setDraft(enhanced)
-        notify('info', t('notice.done'))
+        notifyInfo(t('notice.done'))
       })
       .catch((reason: unknown) => {
         if (controller.signal.aborted) {
-          notify('info', t('notice.cancelled'))
+          notifyInfo(t('notice.cancelled'))
           return
         }
         const message = reason instanceof Error ? reason.message : String(reason)

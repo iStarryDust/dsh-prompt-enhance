@@ -116,6 +116,7 @@ export function apply(ctx: ClientContext): void {
     inject: (): EnhanceSectionInjected => ({
       hooks: { enhanceSection: controller.store },
       toggleEnabled: (next) => controller.toggleEnabled(next),
+      toggleShowNotices: (next) => controller.toggleShowNotices(next),
       setParam: (field, value) => { controller.setParam(field, value) },
       saveParams: () => controller.saveParams(),
       loadModels: () => controller.loadModels(),

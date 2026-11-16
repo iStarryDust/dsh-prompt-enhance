@@ -16,6 +16,7 @@ import { fileURLToPath } from "node:url";
 /** schemastery schema for the plugin configuration (volatile fields only). */
 const Config = z$1.object({
 	enabled: z$1.boolean().default(true).volatile(),
+	showNotices: z$1.boolean().default(true).volatile(),
 	overrideModel: z$1.string().default("").volatile(),
 	temperature: z$1.number().min(0).max(2).default(.7).volatile(),
 	maxTokens: z$1.number().step(1).min(64).max(65536).default(2048).volatile(),

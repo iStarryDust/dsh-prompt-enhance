@@ -15,6 +15,8 @@ import { createSnapshotStore, type SnapshotStore } from '@deepseek-ai/dsh-client
 export interface EnhanceParams {
   /** Show the composer enhance button. */
   enabled: boolean
+  /** Show the enhancement hint notices above the composer. */
+  showNotices: boolean
   /** `provider/model` override; empty follows the session model. */
   overrideModel: string
   /** Sampling temperature. */
@@ -30,6 +32,7 @@ export function decodeEnhanceParams(section: unknown): EnhanceParams {
     : {}
   return {
     enabled: source.enabled !== false,
+    showNotices: source.showNotices !== false,
     overrideModel: typeof source.overrideModel === 'string' ? source.overrideModel : '',
     temperature: typeof source.temperature === 'number' && Number.isFinite(source.temperature) ? source.temperature : 0.7,
     maxTokens: typeof source.maxTokens === 'number' && Number.isFinite(source.maxTokens) ? source.maxTokens : 2048,
@@ -171,6 +174,11 @@ export class EnhanceSettingsController {
   /** Toggle the enable switch through the shared configuration form. */
   async toggleEnabled(next: boolean): Promise<void> {
     await this.form.set('enabled', next)
+  }
+
+  /** Toggle the hint-notice switch through the shared configuration form. */
+  async toggleShowNotices(next: boolean): Promise<void> {
+    await this.form.set('showNotices', next)
   }
 
   /** Update one parameter draft field (client-side until saved). */

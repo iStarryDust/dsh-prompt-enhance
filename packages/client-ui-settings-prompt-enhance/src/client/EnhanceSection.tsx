@@ -21,6 +21,8 @@ export interface EnhanceSectionInjected {
   }
   /** Toggle the enable switch. */
   toggleEnabled: (next: boolean) => Promise<void>
+  /** Toggle the hint-notice switch. */
+  toggleShowNotices: (next: boolean) => Promise<void>
   /** Update one parameter draft field. */
   setParam: <K extends keyof EnhanceParams>(field: K, value: EnhanceParams[K]) => void
   /** Save the parameter draft. */
@@ -48,11 +50,13 @@ export type EnhanceSectionProps =
  * @returns the section page.
  */
 export function EnhanceSection({
-  useEnhanceSection, toggleEnabled, setParam, saveParams, loadModels, setTemplate, saveTemplates, restoreTemplates, loadTemplates, t,
+  useEnhanceSection, toggleEnabled, toggleShowNotices, setParam, saveParams, loadModels, setTemplate, saveTemplates, restoreTemplates, loadTemplates, t,
 }: EnhanceSectionProps) {
   const state = useEnhanceSection(value => value)
   const [switchBusy, setSwitchBusy] = useState(false)
   const [switchFailed, setSwitchFailed] = useState(false)
+  const [noticeBusy, setNoticeBusy] = useState(false)
+  const [noticeFailed, setNoticeFailed] = useState(false)
   const [paramsBusy, setParamsBusy] = useState(false)
   const [templatesBusy, setTemplatesBusy] = useState(false)
 
@@ -87,6 +91,25 @@ export function EnhanceSection({
                 void toggleEnabled(next)
                   .catch(() => { setSwitchFailed(true) })
                   .finally(() => { setSwitchBusy(false) })
+              }}
+            />
+          </li>
+          <li className={css.rowCard}>
+            <div className={css.rowText}>
+              <span className={css.rowTitle}>{t('showNotices.title')}</span>
+              <span className={css.rowDesc}>{t('showNotices.description')}</span>
+              {noticeFailed && <span className={css.error} role="alert">{t('writeFailed')}</span>}
+            </div>
+            <Switch
+              checked={state.params.showNotices}
+              disabled={disabled || noticeBusy}
+              label={t('showNotices.title')}
+              onChange={(next) => {
+                setNoticeFailed(false)
+                setNoticeBusy(true)
+                void toggleShowNotices(next)
+                  .catch(() => { setNoticeFailed(true) })
+                  .finally(() => { setNoticeBusy(false) })
               }}
             />
           </li>
