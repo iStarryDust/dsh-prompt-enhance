@@ -6,7 +6,7 @@
  * Failure never touches the draft: the error surfaces as a composer notice
  * and stays in the button's tooltip until the next action.
  */
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Tooltip } from '@deepseek-ai/dsh-client-ui-primitives'
 import type { SnapshotStore } from '@deepseek-ai/dsh-client-store'
 import type { InjectFace, PropsLocale, PropsRuntime } from '@deepseek-ai/dsh-client-ui-slots'
@@ -87,12 +87,27 @@ export function EnhanceButton({
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const backupRef = useRef<string | null>(null)
+  // The enhanced draft this backup corresponds to; the restore state holds
+  // only while the live draft still equals it.
+  const enhancedRef = useRef<string | null>(null)
   const abortRef = useRef<AbortController | null>(null)
 
   const draft = input.draft
   const empty = draft.trim() === ''
   const hasReferences = input.occurrences.length > 0
-  const restorable = backupRef.current !== null
+  const restorable = backupRef.current !== null && draft === enhancedRef.current
+
+  // A send clears the draft and any manual edit moves it on; in both cases the
+  // stored backup no longer describes what is on screen, so drop the restore
+  // state (otherwise the button stays in "restore original" forever and its
+  // next click would reinstate a stale prompt instead of enhancing the new one).
+  useEffect(() => {
+    if (backupRef.current !== null && draft !== enhancedRef.current) {
+      backupRef.current = null
+      enhancedRef.current = null
+      setError(null)
+    }
+  }, [draft])
 
   const tooltip = busy
     ? t('button.cancel')
@@ -109,6 +124,7 @@ export function EnhanceButton({
     if (restorable) {
       const backup = backupRef.current
       backupRef.current = null
+      enhancedRef.current = null
       setError(null)
       if (backup !== null) inputActions.setDraft(backup)
       return
@@ -124,6 +140,7 @@ export function EnhanceButton({
       .then((enhanced) => {
         if (controller.signal.aborted) return
         backupRef.current = captured
+        enhancedRef.current = enhanced
         inputActions.setDraft(enhanced)
         notify('info', t('notice.done'))
       })
